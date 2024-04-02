@@ -18,12 +18,7 @@ namespace Game {
         float height = static_cast<float>(GetScreenHeight());
         QuadTree sceneGraph{Rectangle{0.0f, 0.0f, width, height}};
         for (auto obj : collisionObjects) {
-            auto position = obj->GetComponent<TransformComponent>()->Position;
-            auto collider = obj->GetComponent<CollisionComponent>()->Size;
-            position = Vector2{position.x - collider.x / 2.0f, position.y - collider.y / 2.0f};
-
-            Point p{position, obj};
-            sceneGraph.Insert(p);
+            sceneGraph.Insert(obj);
         }
         for (auto obj1 : collisionObjects) {
             auto position = obj1->GetComponent<TransformComponent>()->Position;

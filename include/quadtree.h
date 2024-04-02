@@ -4,18 +4,10 @@
 #include <memory>
 #include <vector>
 
-class Point {
-public:
-    Vector2 Position;
-    GameObject* Object;
-
-    Point(const Vector2& centerPoint, GameObject* object);
-};
-
 class QuadTree {
 private:
     Rectangle _bounds;
-    std::vector<Point> _points;
+    std::vector<GameObject*> _objects;
     std::size_t _capacity;
     std::unique_ptr<QuadTree> _topLeft;
     std::unique_ptr<QuadTree> _topRight;
@@ -28,6 +20,6 @@ private:
 public:
     QuadTree(const Rectangle& bounds);
     void Clear();
-    bool Insert(const Point& p);
+    bool Insert(GameObject* object);
     std::vector<GameObject*> Query(const Rectangle& range);
 };

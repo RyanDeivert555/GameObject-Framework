@@ -1,12 +1,23 @@
 #include "../include/quadtree.h"
+#include "../include/basic_components.h"
 #include "raylib.h"
 #include <memory>
 #include <vector>
 
-// should just remove point?
-Point::Point(const Vector2& topLeftPoint, GameObject* object) {
-    Position = topLeftPoint;
-    Object = object;
+Rectangle GetRect(GameObject* obj) {
+    auto transform = obj->GetComponent<TransformComponent>();
+    auto collider = obj->GetComponent<CollisionComponent>();
+    Vector2 position = transform->Position;
+    Vector2 size = collider->Size;
+
+    return {position.x - size.x / 2.0f, position.y - size.y / 2.0f, size.x, size.y};
+}
+
+bool Collide(GameObject* o1, GameObject* o2) {
+    Rectangle r1 = GetRect(o1);
+    Rectangle r2 = GetRect(o2);
+
+    return CheckCollisionRecs(r1, r2);
 }
 
 QuadTree::QuadTree(const Rectangle& bounds) {
@@ -39,35 +50,35 @@ void QuadTree::subDivide() {
     _bottomRight = std::make_unique<QuadTree>(bottomRight);
 }
 
-bool QuadTree::Insert(const Point& p) {
-    if (!CheckCollisionPointRec(p.Position, _bounds)) {
+bool QuadTree::Insert(GameObject* object) {
+    if (!CheckCollisionRecs(GetRect(object), _bounds)) {
         return false;
     }
-    if (_points.size() < _capacity) {
-        _points.push_back(p);
+    if (_objects.size() < _capacity) {
+        _objects.push_back(object);
 
         return true;
     }
     if (!_divided) {
         subDivide();
     }
-    if (_topLeft->Insert(p)) {
+    if (_topLeft->Insert(object)) {
         return true;
     }
-    if (_topRight->Insert(p)) {
+    if (_topRight->Insert(object)) {
         return true;
     }
-    if (_bottomLeft->Insert(p)) {
+    if (_bottomLeft->Insert(object)) {
         return true;
     }
-    if (_bottomRight->Insert(p)) {
+    if (_bottomRight->Insert(object)) {
         return true;
     }
     return false;
 }
 
 void QuadTree::Clear() {
-    _points.clear();
+    _objects.clear();
     if (_divided) {
         _topLeft->Clear();
         _topRight->Clear();
@@ -87,9 +98,9 @@ std::vector<GameObject*> QuadTree::Query(const Rectangle& range) {
         return found;
     }
 
-    for (const auto& point : _points) {
-        if (CheckCollisionPointRec(point.Position, range)) {
-            found.push_back(point.Object);
+    for (const auto& obj : _objects) {
+        if (CheckCollisionRecs(GetRect(obj), range)) {
+            found.push_back(obj);
         }
     }
 
