@@ -19,6 +19,7 @@ public:
     GameObject(const std::string& name);
     ~GameObject();
 
+    void ProcessCollisions(GameObject* other);
     void Update();
     void Render();
 

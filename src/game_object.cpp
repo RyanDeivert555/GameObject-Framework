@@ -13,6 +13,15 @@ GameObject::~GameObject() {
     }
 }
 
+void GameObject::ProcessCollisions(GameObject* other) {
+    for (auto& [_, component] : Components) {
+        component->OnCollision(other);
+    }
+    for (auto child : _children) {
+        child->ProcessCollisions(other);
+    }
+}
+
 void GameObject::Update() {
     for (auto& [_, component] : Components) {
         component->OnUpdate();

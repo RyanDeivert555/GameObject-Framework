@@ -14,6 +14,7 @@ namespace Game {
     }
 
     void UpdateSceneGraph() {
+        std::vector<std::pair<GameObject*, GameObject*>> collidedObjects{};
         float width = static_cast<float>(GetScreenWidth());
         float height = static_cast<float>(GetScreenHeight());
         QuadTree sceneGraph{Rectangle{0.0f, 0.0f, width, height}};
@@ -29,10 +30,13 @@ namespace Game {
 
             for (auto obj2 : sceneGraph.Query(range)) {
                 if (obj1 != obj2) {
-                    obj1->GetComponent<CollisionComponent>()->OnCollision(obj2);
-                    obj2->GetComponent<CollisionComponent>()->OnCollision(obj1);
+                    collidedObjects.push_back({obj1, obj2});
+                    collidedObjects.push_back({obj2, obj1});
                 }
             }
+        }
+        for (auto& [o1, o2] : collidedObjects) {
+            o1->ProcessCollisions(o2);
         }
     }
 
