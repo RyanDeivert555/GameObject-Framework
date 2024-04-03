@@ -5,16 +5,9 @@
 #include "raymath.h"
 #include "rlgl.h"
 #include <cassert>
+#include <memory>
 
 void TransformComponent::PushMatrix() {
-    GameObject* parent = Object.GetParent();
-    if (parent) {
-        auto parentTransform = parent->GetComponent<TransformComponent>();
-        if (parentTransform) {
-            parentTransform->PushMatrix();
-        }
-    }
-
     rlPushMatrix();
     rlTranslatef(Position.x, Position.y, 0.0f);
     rlRotatef(Rotation, 0.0f, 0.0f, 1.0f);
@@ -22,13 +15,6 @@ void TransformComponent::PushMatrix() {
 
 void TransformComponent::PopMatrix() {
     rlPopMatrix();
-    GameObject* parent = Object.GetParent();
-    if (parent) {
-        auto parentTransform = parent->GetComponent<TransformComponent>();
-        if (parentTransform) {
-            parentTransform->PopMatrix();
-        }
-    }
 }
 
 void RenderComponent::OnRender() {

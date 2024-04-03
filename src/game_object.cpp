@@ -8,20 +8,9 @@ GameObject::GameObject(const std::string& name) {
     Name = name;
 }
 
-GameObject::~GameObject() {
-    for (auto child : _children) {
-        TraceLog(LOG_INFO, TextFormat("Deleting %s", child->Name.c_str()));
-        delete child;
-    }
-}
-
 void GameObject::ProcessCollisions(GameObject* other) {
     for (auto& [_, component] : Components) {
         component->OnCollision(other);
-    }
-    // do not process children
-    for (auto child : _children) {
-        child->ProcessCollisions(other);
     }
 }
 
@@ -29,19 +18,11 @@ void GameObject::Update() {
     for (auto& [_, component] : Components) {
         component->OnUpdate();
     }
-
-    for (auto child : _children) {
-        child->Update();
-    }
 }
 
 void GameObject::Render() {
     for (auto& [_, component] : Components) {
         component->OnRender();
-    }
-
-    for (auto child : _children) {
-        child->Render();
     }
 }
 
@@ -71,14 +52,6 @@ Component* GameObject::GetComponent(std::size_t id) {
     }
 
     return it->second.get();
-}
-
-GameObject* GameObject::AddChild(const std::string& name) {
-    GameObject* newChild = new GameObject(name);
-    newChild->_parent = this;
-    _children.emplace_back(newChild);
-
-    return newChild;
 }
 
 // for Component

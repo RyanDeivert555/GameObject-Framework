@@ -3,11 +3,19 @@
 #include "../include/quadtree.h"
 #include "raylib.h"
 #include <iostream>
+#include <memory>
 
 namespace Game {
     GameObject root{"root"};
     // for physics
     std::vector<GameObject*> collisionObjects{};
+    std::vector<std::unique_ptr<GameObject>> objects{};
+
+    GameObject* AddObject(const std::string& name) {
+        objects.emplace_back(std::make_unique<GameObject>(name));
+
+        return objects.back().get();
+    }
 
     void AddToSceneGraph(GameObject* object) {
         collisionObjects.push_back(object);
@@ -37,6 +45,18 @@ namespace Game {
         }
         for (auto& [o1, o2] : collidedObjects) {
             o1->ProcessCollisions(o2);
+        }
+    }
+
+    void UpdateObjects() {
+        for (auto& obj : objects) {
+            obj->Update();
+        }
+    }
+
+    void RenderObjects() {
+        for (const auto& obj : objects) {
+            obj->Render();
         }
     }
 
