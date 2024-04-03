@@ -4,9 +4,6 @@
 #include <vector>
 
 namespace Game {
-    extern std::vector<GameObject*> collisionObjects;
-    extern std::vector<std::unique_ptr<GameObject>> objects;
-
     GameObject* AddObject(const std::string& name);
     void AddToSceneGraph(GameObject* object);
     void Setup();

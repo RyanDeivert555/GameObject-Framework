@@ -1,11 +1,17 @@
 #include "../include/game_object.h"
 #include "../include/basic_components.h"
 #include "raylib.h"
+#include <iostream>
 #include <memory>
 #include <cassert>
 
 GameObject::GameObject(const std::string& name) {
     Name = name;
+    std::cout << "Creating " << name << " (Address: " << this << ")\n";
+}
+
+GameObject::~GameObject() {
+    std::cout << "Destroying " << Name << " (Address: " << this << ")\n";
 }
 
 void GameObject::ProcessCollisions(GameObject* other) {

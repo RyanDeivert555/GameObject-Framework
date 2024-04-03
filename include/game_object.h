@@ -15,7 +15,7 @@ public:
     std::string Name{};
     
     GameObject(const std::string& name);
-    virtual ~GameObject() = default;
+    virtual ~GameObject();
 
     void ProcessCollisions(GameObject* other);
     void Update();

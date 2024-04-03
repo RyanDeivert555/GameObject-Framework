@@ -6,6 +6,7 @@
 #include "rlgl.h"
 #include <cassert>
 #include <memory>
+#include <iostream>
 
 void TransformComponent::PushMatrix() {
     rlPushMatrix();
@@ -66,7 +67,7 @@ void CollisionComponent::OnCreate() {
 }
 
 void CollisionComponent::OnCollision(GameObject* other) {
-    TraceLog(LOG_INFO, TextFormat("%s hit %s", Object.Name.c_str(), other->Name.c_str()));
+    std::cout << Object.Name << " hits " << other->Name << "\n";
 }
 
 void CollisionComponent::OnRender() {

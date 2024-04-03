@@ -2,7 +2,6 @@
 #include "../include/game_object.h"
 #include "../include/manager.h"
 #include "../include/basic_components.h"
-#include <iostream>
 
 class CollisionResponse : public Component {
 public:

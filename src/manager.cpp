@@ -13,7 +13,7 @@ namespace Game {
 
     GameObject* AddObject(const std::string& name) {
         objects.emplace_back(std::make_unique<GameObject>(name));
-
+        
         return objects.back().get();
     }
 
@@ -39,7 +39,6 @@ namespace Game {
             for (auto obj2 : sceneGraph.Query(range)) {
                 if (obj1 != obj2) {
                     collidedObjects.push_back({obj1, obj2});
-                    collidedObjects.push_back({obj2, obj1});
                 }
             }
         }
