@@ -40,5 +40,10 @@ public:
         return static_cast<T*>(GameObject::GetComponent(T::GetComponentId()));
     }
 
+    template<class T>
+    const T* GetComponent() const {
+        return static_cast<T*>(GameObject::GetComponent(T::GetComponentId()));
+    }
+
     Rectangle GetRect();
 };
