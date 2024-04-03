@@ -24,7 +24,10 @@ void RenderComponent::OnRender() {
     }
 
     Rectangle dest{0.0f, 0.0f, std::abs(Source.width * Scale), std::abs(Source.height * Scale)};
-    DrawRectanglePro(dest, Vector2{dest.width * 0.5f, dest.height * 0.5f}, 0.0f, Color);
+    
+    Vector2 offset{dest.width * 0.5f, dest.height * 0.5f};
+    
+    DrawRectanglePro(dest, offset, 0.0f, Color);
     
     if (transform) {
         transform->PopMatrix();

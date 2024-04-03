@@ -9,7 +9,8 @@ public:
     DEFINE_COMPONENT(CollisionResponse);
 
     void OnCollision(GameObject* other) override {
-        
+        auto transform = GetComponent<TransformComponent>();
+        transform->Position.x += 10.0f;
     }
 };
 
@@ -36,6 +37,7 @@ void Game::Setup() {
         render->Scale = 50.0f;
         auto collider = o2->AddComponent<CollisionComponent>();
         collider->Size = Vector2{50.f, 50.0f};
+        o2->AddComponent<CollisionResponse>();
     }
 }
 

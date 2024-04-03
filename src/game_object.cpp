@@ -62,6 +62,8 @@ Component* Component::GetComponent(size_t id) {
 Rectangle GameObject::GetRect() {
     auto transform = GetComponent<TransformComponent>();
     auto collider = GetComponent<CollisionComponent>();
+    assert(transform);
+    assert(collider);
     
     Vector2 position = transform->Position;
     Vector2 size = collider->Size;
