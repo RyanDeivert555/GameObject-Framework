@@ -11,7 +11,6 @@ T(GameObject& object) : Component(object) {}
 class GameObject;
 
 class Component {
-
 protected:
     GameObject& Object;
 

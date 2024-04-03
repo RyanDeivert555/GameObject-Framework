@@ -56,6 +56,7 @@ int main() {
     while (!WindowShouldClose()) {
         Game::Mainloop();
     }
+    CloseWindow();
 
     return 0;
 }
