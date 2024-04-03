@@ -14,6 +14,8 @@ public:
 };
 
 void Game::Setup() {
+    InitWindow(800, 600, "Game Object Example");
+    SetTargetFPS(60);
     {
         auto o1 = AddObject("o1");
         auto transform = o1->AddComponent<TransformComponent>();
@@ -49,9 +51,6 @@ void Game::Update() {
 }
 
 int main() {
-    InitWindow(800, 600, "Game Object Example");
-    SetTargetFPS(60);
-    // make base scene
     Game::Setup();
 
     while (!WindowShouldClose()) {

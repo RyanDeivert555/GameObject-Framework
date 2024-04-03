@@ -8,7 +8,7 @@ public:
 
     Vector2 Position{};
     float Rotation{};
-    
+
     void PushMatrix();
     void PopMatrix();
 };
@@ -44,6 +44,7 @@ public:
 class CollisionComponent : public Component {
 public:
     DEFINE_COMPONENT(CollisionComponent);
+    
     Vector2 Size{};
 
     void OnCreate() override;
