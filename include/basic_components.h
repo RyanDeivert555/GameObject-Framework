@@ -4,11 +4,11 @@
 
 class TransformComponent : public Component {
 public:
-    Vector2 Position{};
-    float Rotation{};
-
     DEFINE_COMPONENT(TransformComponent);
 
+    Vector2 Position{};
+    float Rotation{};
+    
     void PushMatrix();
     void PopMatrix();
 };
