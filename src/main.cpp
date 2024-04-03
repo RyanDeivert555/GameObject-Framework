@@ -1,14 +1,37 @@
 #include "raylib.h"
+#include "raymath.h"
 #include "../include/game_object.h"
 #include "../include/manager.h"
 #include "../include/basic_components.h"
+#include <iostream>
 
 class CollisionResponse : public Component {
 public:
     DEFINE_COMPONENT(CollisionResponse);
 
     void OnCollision(GameObject* other) override {
-        other->GetComponent<RenderComponent>()->Color.a -= 1;
+        auto p1 = Object.GetComponent<TransformComponent>();
+        auto p2 = other->GetComponent<TransformComponent>();
+        auto c1 = Object.GetComponent<CollisionComponent>();
+        auto c2 = other->GetComponent<CollisionComponent>();
+
+        Vector2 center1 = Vector2Scale(Vector2Add(p1->Position, c1->Size), 0.5f);
+        Vector2 center2 = Vector2Scale(Vector2Add(p2->Position, c2->Size), 0.5f);
+        Vector2 size1 = c1->Size;
+        Vector2 size2 = c2->Size;
+
+        if (center1.x > center2.x - size1.x) {
+            p1->Position.x = center2.x - size1.x;
+        }
+        if (center1.x < center2.x + size2.x) {
+            p1->Position.x = center2.x + size2.x;
+        }
+        if (center1.y > center2.y - size1.y) {
+            p1->Position.y = center2.y - size1.y;
+        }
+        if (center1.y < center2.y + size2.y) {
+            p1->Position.y = center2.y + size2.y;
+        }
     }
 };
 
@@ -44,10 +67,11 @@ void Game::Setup() {
             auto child = o2->AddChild("o2 child");
             auto transform = child->AddComponent<TransformComponent>();
             auto render = child->AddComponent<RenderComponent>();
-            render->Color = BLACK;
+            render->Color = Fade(YELLOW, 0.5f);
             render->Scale = 20.0f;
             auto collider = child->AddComponent<CollisionComponent>();
             collider->Size = {20.0f, 20.0f};
+            child->AddComponent<CollisionResponse>();
         }
     }
 }

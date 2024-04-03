@@ -1,4 +1,5 @@
 #pragma once
+#include "raylib.h"
 #include "component.h"
 #include <memory>
 #include <string>
@@ -29,7 +30,6 @@ public:
 
     template<class T>
     T* AddComponent() {
-        // why `this` pointer?
         return static_cast<T*>(GameObject::AddComponent(std::make_unique<T>(*this)));
     }
 
@@ -52,4 +52,5 @@ public:
     }
 
     GameObject* AddChild(const std::string& name);
+    Rectangle GetRect();
 };

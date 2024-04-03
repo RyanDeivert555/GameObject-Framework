@@ -1,6 +1,8 @@
 #include "../include/game_object.h"
+#include "../include/basic_components.h"
 #include "raylib.h"
 #include <memory>
+#include <cassert>
 
 GameObject::GameObject(const std::string& name) {
     Name = name;
@@ -17,6 +19,7 @@ void GameObject::ProcessCollisions(GameObject* other) {
     for (auto& [_, component] : Components) {
         component->OnCollision(other);
     }
+    // do not process children
     for (auto child : _children) {
         child->ProcessCollisions(other);
     }
@@ -81,4 +84,14 @@ GameObject* GameObject::AddChild(const std::string& name) {
 // for Component
 Component* Component::GetComponent(size_t id) {
     return Object.GetComponent(id);
+}
+
+Rectangle GameObject::GetRect() {
+    auto transform = GetComponent<TransformComponent>();
+    auto collider = GetComponent<CollisionComponent>();
+    
+    Vector2 position = transform->Position;
+    Vector2 size = collider->Size;
+
+    return {position.x - size.x / 2.0f, position.y - size.y / 2.0f, size.x, size.y};
 }

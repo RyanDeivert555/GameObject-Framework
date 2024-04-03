@@ -1,21 +1,11 @@
 #include "../include/quadtree.h"
-#include "../include/basic_components.h"
 #include "raylib.h"
 #include <memory>
 #include <vector>
 
-Rectangle GetRect(GameObject* obj) {
-    auto transform = obj->GetComponent<TransformComponent>();
-    auto collider = obj->GetComponent<CollisionComponent>();
-    Vector2 position = transform->Position;
-    Vector2 size = collider->Size;
-
-    return {position.x - size.x / 2.0f, position.y - size.y / 2.0f, size.x, size.y};
-}
-
 bool Collide(GameObject* o1, GameObject* o2) {
-    Rectangle r1 = GetRect(o1);
-    Rectangle r2 = GetRect(o2);
+    Rectangle r1 = o1->GetRect();
+    Rectangle r2 = o2->GetRect();
 
     return CheckCollisionRecs(r1, r2);
 }
@@ -51,7 +41,7 @@ void QuadTree::subDivide() {
 }
 
 bool QuadTree::Insert(GameObject* object) {
-    if (!CheckCollisionRecs(GetRect(object), _bounds)) {
+    if (!CheckCollisionRecs(object->GetRect(), _bounds)) {
         return false;
     }
     if (_objects.size() < _capacity) {
@@ -99,7 +89,7 @@ std::vector<GameObject*> QuadTree::Query(const Rectangle& range) {
     }
 
     for (const auto& obj : _objects) {
-        if (CheckCollisionRecs(GetRect(obj), range)) {
+        if (CheckCollisionRecs(obj->GetRect(), range)) {
             found.push_back(obj);
         }
     }
